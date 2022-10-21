@@ -68,7 +68,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=OccurrenceBulkAction::class,
  *              "swagger_context"={
  *                  "parameters"={},
- *                  "responses"={ 
+ *                  "responses"={
  *                      "207"= {
  *                          "description" = "The bulk operation was performed succesfully."
  *                      },
@@ -87,7 +87,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=ImportOccurrenceAction::class,
  *              "swagger_context"={
  *                  "parameters"={},
- *                  "responses"={ 
+ *                  "responses"={
  *                      "207"= {
  *                          "description" = "The import was performed succesfully."
  *                      },
@@ -105,7 +105,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=ExportOccurrenceAction::class,
  *              "swagger_context"={
  *                  "parameters"={},
- *                  "responses"={ 
+ *                  "responses"={
  *                      "207"= {
  *                          "description" = "The export was performed succesfully."
  *                      },
@@ -122,7 +122,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * //AT UniqueEntity(fields={"signature"}, message="It seems a duplicate occurrence already exists in CEL. Il semblerait que cette observation soit déjà présente dans votre carnet en ligne")
  * @ORM\Entity(repositoryClass="App\Repository\OccurrenceRepository")
- * @ORM\Table(name="occurrence", indexes={@ORM\Index(name="user_id_idx", columns={"user_id"})})
+ * @ORM\Table(name="occurrence", indexes={@ORM\Index(name="user_id_occ_idx", columns={"user_id"})})
  * @todo use JSON type for geometry if possible to have MariaDB 10.2.7.+ in prod
  * @todo elevation string -> float
  */
@@ -162,7 +162,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * Exemple le plus simple : une synusy "contient" des occurrences d'espèces.
     * Exemple : une microcénose "contient" des occurrences de synusies.
     * Le niveau de profondeur maximal géré par VegLab est de 2 (un parent peut contenir des enfants et petits-enfants)
-    * 
+    *
     * @ORM\OneToMany(targetEntity="Occurrence", mappedBy="parent", cascade={"persist", "remove"})
     * @Groups({"read", "write"})
     */
@@ -249,7 +249,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
     /**
      * VL Workspace
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(name="vl_workspace", type="string", nullable=true, options={"default": "none", "comment":"[VL] Espace de travail associé à la donnée"})
      */
@@ -275,7 +275,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * VL Précision de la date de l'obs.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="vl_date_observed_precision", type="dateprecisionenum", nullable=true, options={"comment":"[VL] Précision de la date ('day' | 'month' | 'year')"})
+    * @ORM\Column(name="vl_date_observed_precision", type="text", nullable=true, options={"comment":"[VL] Précision de la date ('day' | 'month' | 'year')"})
     */
    private $dateObservedPrecision = null;
 
@@ -309,16 +309,16 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    /**
     * Nom saisi par l'utilisateur (nom scientifique ou autre terme qualifiant
     * l'individu observé).
-    * 
+    *
     * @Groups({"read", "write", "photo_read"})
     * @ORM\Column(name="user_sci_name", type="string", nullable=true, options={"comment":"Nom saisi par l'utilisateur (nom scientifique ou autre terme qualifiant  l'individu observé)"})
     */
    private $userSciName = null;
 
    /**
-    * Numéro du nom saisi par l'utilisateur, dans le cas où celui-ci est lié 
+    * Numéro du nom saisi par l'utilisateur, dans le cas où celui-ci est lié
     * à un référentiel.
-    * 
+    *
     * @Groups({"read", "write", "photo_read"})
     * @ORM\Column(name="user_sci_name_id", type="integer", nullable=true, options={"comment":"Numéro du nom (ou numéro nomenclatural ou nn) saisi par l'utilisateur, dans le cas où celui-ci est lié à un référentiel"})
     */
@@ -360,9 +360,9 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
    /**
     * Certitude de l'identification taxonomique.
-    * 
+    *
     * @Groups({"read", "write"})
-    * @ORM\Column(type="certaintyenum", nullable=true, options={"comment":"Certitude de l identification taxonomique"})
+    * @ORM\Column(type="text", nullable=true, options={"comment":"Certitude de l identification taxonomique"})
     */
    private $certainty;
 
@@ -374,12 +374,12 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     */
    private $annotation = null;
 
-   /** 
-    * Type de donnée - observation de terrain, issue de la bibliographie, 
+   /**
+    * Type de donnée - observation de terrain, issue de la bibliographie,
     * donnée d'herbier.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="occurrence_type", type="occurrencetypeenum", nullable=true, options={"comment":"Type de donnée - observation de terrain, issue de la bibliographie, donnée d'herbier", "default": OccurrenceTypeEnumType::FIELD})
+    * @ORM\Column(name="occurrence_type", type="text", nullable=true, options={"comment":"", "default": OccurrenceTypeEnumType::FIELD})
     */
    private $occurrenceType = OccurrenceTypeEnumType::FIELD;
 
@@ -398,11 +398,11 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    private $coef = null;
 
    /**
-    * Stade phénologique observé - échelle BBCH, stades regroupés par 10 
+    * Stade phénologique observé - échelle BBCH, stades regroupés par 10
     * (sauf certains stades remarquables).
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(type="phenologyenum", nullable=true, options={"comment":"Stade phénologique observé - échelle BBCH, stades regroupés par 10 (sauf certains stades remarquables)"})
+    * @ORM\Column(type="text", nullable=true, options={"comment":"Stade phénologique observé - échelle BBCH, stades regroupés par 10 (sauf certains stades remarquables)"})
     */
    private $phenology = null;
 
@@ -410,7 +410,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * Indique la présence / l'absence d'une part d'herbier associée à l'obs.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="sample_herbarium", type="boolean", nullable=true, options={"comment":"Indique la présence / l'absence d'une part d'herbier associée à l'obs", "default": false})
+    * @ORM\Column(name="sample_herbarium", type="boolean", nullable=true, options={"comment":"", "default": false})
     */
    private $sampleHerbarium = false;
 
@@ -431,12 +431,12 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    private $vlBiblioSource;
 
    /**
-    * Interface utilisée pour la saisie de l'obs - CEL, VegLab, widget, 
+    * Interface utilisée pour la saisie de l'obs - CEL, VegLab, widget,
     * PlantNet, autre.
     *
     * @Assert\NotNull
     * @Groups({"read", "write"})
-    * @ORM\Column(name="input_source", type="inputsourceenum", nullable=true, options={"comment":"Interface utilisée pour la saisie de l'obs - CEL, VegLab, widget,  PlantNet, autre"})
+    * @ORM\Column(name="input_source", type="text", nullable=true, options={"comment":"Interface utilisée pour la saisie de l'obs - CEL, VegLab, widget,  PlantNet, autre"})
     */
    private $inputSource = InputSourceEnumType::CEL;
 
@@ -459,7 +459,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    private $isVisibleInCel = true;
 
    /**
-    * Indique si l'obs s'affiche dans VegLab ou non. 
+    * Indique si l'obs s'affiche dans VegLab ou non.
     *
     * @Assert\NotNull
     * @Groups({"read", "write"})
@@ -480,7 +480,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * Localisation précise de l'obs.
     * GeoJSON geometry fo this occurrence.
     *
-    * @Groups({"read", "write"})    
+    * @Groups({"read", "write"})
     * @ORM\Column(type="text", nullable=true, options={"comment":"Localisation précise de l'obs"})
     */
    private $geometry = null;
@@ -488,7 +488,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    /**
     * VL Centroïde de l'obs au format [long, lat]
     *
-    * @Groups({"read", "write"})    
+    * @Groups({"read", "write"})
     * @ORM\Column(name="vl_centroid", type="text", nullable=true, options={"comment":"Centroïde de l'obs au format [long, lat]"})
     */
    private $centroid = null;
@@ -542,7 +542,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    private $sublocality = null;
 
    /**
-    * Milieu, type d'habitat. 
+    * Milieu, type d'habitat.
     *
     * @Groups({"read", "write"})
     * @ORM\Column(type="string", nullable=true, options={"comment":"Milieu, type d'habitat"})
@@ -564,11 +564,11 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
    private $station = null;
 
    /**
-    * Précision géographique à laquelle est publiée l'obs, permet de gérer le 
+    * Précision géographique à laquelle est publiée l'obs, permet de gérer le
     * floutage - Précise, Localité, Maille 10x10km.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="published_location", type="publishedlocationenum", nullable=true, options={"comment":"Précision géographique à laquelle est publiée l'obs, permet de gérer le floutage", "default": PublishedLocationEnumType::PRECISE})
+    * @ORM\Column(name="published_location", type="text", nullable=true, options={"comment":"Précision géographique à laquelle est publiée l'obs, permet de gérer le floutage", "default": PublishedLocationEnumType::PRECISE})
     */
    private $publishedLocation = PublishedLocationEnumType::PRECISE;
 
@@ -576,7 +576,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * Précision (ou incertitude) de la localisation.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="location_accuracy", type="locationaccuracytypeenum", nullable=true, options={"comment":"Précision (ou incertitude) de la localisation"})
+    * @ORM\Column(name="location_accuracy", type="text", nullable=true, options={"comment":"Précision (ou incertitude) de la localisation"})
     */
    private $locationAccuracy = null;
 
@@ -584,7 +584,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     * VL Précision (ou incertitude) de la localisation.
     *
     * @Groups({"read", "write"})
-    * @ORM\Column(name="vl_location_accuracy", type="vllocationaccuracytypeenum", nullable=true, options={"comment":"[VL] Précision (ou incertitude) de la localisation"})
+    * @ORM\Column(name="vl_location_accuracy", type="text", nullable=true, options={"comment":"[VL] Précision (ou incertitude) de la localisation"})
     */
    private $vlLocationAccuracy = null;
 
@@ -671,7 +671,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
     /**
      * Référentiel taxonomique
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(name="taxo_repo", type="string", nullable=true, options={"default": false, "comment":"Référentiel taxonomique"})
      */
@@ -702,7 +702,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     private $validations;
 
     /**
-     * Notifications that the status of the Occurence was changed on IdentiPlante (DEL). 
+     * Notifications that the status of the Occurence was changed on IdentiPlante (DEL).
      * One Occurrence can have many associated notifications.
      * ATimpl to keep the eslasticsearch Occurrence index in sync with IdentiPlante (DEL).
      * @ORM\OneToMany(targetEntity="DelUpdateNotification", mappedBy="occurrence")
@@ -739,10 +739,10 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
      * @MaxDepth(1)
      */
     private $syes;
-    
+
     public function isPublishable(): ?bool {
-        return ( 
-            ( null !== $this->geometry) &&            
+        return (
+            ( null !== $this->geometry) &&
             ( null !== $this->dateObserved) &&
             ( null !== $this->certainty) );
     }
@@ -756,7 +756,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     public function getId(): ?int {
         return $this->id;
     }
-    
+
     /**
     * @return Collection|Occurrence[]
     */
@@ -794,27 +794,27 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     public function getLevel(): ?string {
         return $this->level;
     }
- 
+
     public function setLevel(?string $level): self {
         $this->level = $level;
- 
+
         return $this;
     }
 
     public function getParentLevel(): ?string {
         return $this->parentLevel;
     }
- 
+
     public function setParentLevel(?string $parentLevel): self {
         $this->parentLevel = $parentLevel;
- 
+
         return $this;
     }
 
     public function getLayer(): ?string {
         return $this->layer;
     }
- 
+
     public function setLayer(?string $layer): self {
         $this->layer = $layer;
 
@@ -942,7 +942,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
     public function setDateUpdated(?\DateTimeInterface $dateUpdated): TimestampedEntityInterface {
         $this->dateUpdated = $dateUpdated;
-        
+
         return $this;
     }
 
@@ -1396,7 +1396,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
                 $intZip = (int)$this->localityInseeCode;
                 return (int)$intZip/1000;
             }
-        } 
+        }
         return null;
     }
 
@@ -1419,7 +1419,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
         return $this;
     }
-   
+
 
 
     public function getIdentificationAuthor(): ?string {
@@ -1564,7 +1564,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
 
         return $this;
     }
-    
+
     public function removeUserTagRelation(OccurrenceUserOccurrenceTagRelation $userTagRelation): self {
 
         if ($this->userTagRelations->contains($userTagRelation)) {
@@ -1604,7 +1604,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
         if (!$this->extendedFieldOccurrences->contains($extendedFieldOccurrence)) {
            $this->extendedFieldOccurrences[] = $extendedFieldOccurrence;
            $extendedFieldOccurrence->setOccurrence($this);
-        }           
+        }
         return $this;
     }
 
@@ -1617,14 +1617,14 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
                $extendedFieldOccurrence->setOccurrence(null);
            }
        }
-       
+
         return $this;
     }
 
     public function generateSignature($userId) {
         $unencodedSignature = '';
-        $signatureBits = [(string)$userId, $this->getDateObservedMonth(), 
-                          $this->getDateObservedDay(), $this->getDateObservedYear(), 
+        $signatureBits = [(string)$userId, $this->getDateObservedMonth(),
+                          $this->getDateObservedDay(), $this->getDateObservedYear(),
                           $this->getUserSciName(), /* $this->getGeometry(), Geometry may be too long for base64_encode */
                           $this->getLocality()];
 
@@ -1632,7 +1632,7 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
             $unencodedSignature = $unencodedSignature . '-' . $bit;
         }
         // We must urlencode the because of the "Unicode Problem":
-        // https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding 
+        // https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
         $this->signature = base64_encode(rawurlencode($unencodedSignature));
     }
 

@@ -30,7 +30,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-use Symfony\Component\Serializer\Annotation\Groups;	
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,7 +38,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Represents a photo in CEL2 user galleries.
  *
- * @package App\Entity  
+ * @package App\Entity
  *
  * @ApiResource(attributes={
  *     "normalization_context"={"groups"={"photo_read"}},
@@ -51,7 +51,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "put"={"method"="PUT", "access_control"="is_granted('edit', object)"},
  *          "delete"={"method"="DELETE", "access_control"="is_granted('delete', object)"}
  *      },
- *      collectionOperations={    
+ *      collectionOperations={
  *        "get",
  *        "post"={
  *            "method"="POST",
@@ -63,7 +63,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=PhotoBulkAction::class,
  *              "swagger_context"={
  *                  "parameters"={},
- *                  "responses"={ 
+ *                  "responses"={
  *                      "207"= {
  *                          "description" = "The bulk operation was performed succesfully."
  *                      },
@@ -82,7 +82,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=ServeZippedPhotosAction::class,
  *              "swagger_context"={
  *                  "parameters"={},
- *                  "responses"={ 
+ *                  "responses"={
  *                      "207"= {
  *                          "description" = "The import was performed succesfully."
  *                      },
@@ -96,7 +96,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          }
  *    })
  * @ORM\Entity(repositoryClass="App\Repository\PhotoRepository")
- * @ORM\Table(name="photo", indexes={@ORM\Index(name="user_id_idx", columns={"user_id"})}, options={"comment":"Les noms originaux doivent être uniques pour un même utilisateur."})
+ * @ORM\Table(name="photo", indexes={@ORM\Index(name="user_id_photo_idx", columns={"user_id"})}, options={"comment":"Les noms originaux doivent être uniques pour un même utilisateur."})
  * @Vich\Uploadable
  *
  */
@@ -150,7 +150,7 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
 
    /**
      * Date de la prise de vue.
-     * 
+     *
      * @Groups({"photo_read", "write"})
      * @ORM\Column(name="date_shot", type="datetime", nullable=true, options={"comment":"Date de la prise de vue"})
      */
@@ -159,7 +159,7 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
 
    /**
      * Latitude de la photo.
-     * 
+     *
      * @Groups({"photo_read", "write"})
      * @ORM\Column(type="float", nullable=true, options={"comment":"Latitude de la photo"})
      */
@@ -167,7 +167,7 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
 
    /**
      * Longitude de la photo.
-     * 
+     *
      * @Groups({"photo_read", "write"})
      * @ORM\Column(type="float", nullable=true, options={"comment":"Longitude de la photo"})
      */
@@ -214,10 +214,10 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
       * @var File|null
       * @Vich\UploadableField(mapping="media_object", fileNameProperty="jsonData")
       */
-     public $json;  
+     public $json;
 
      /**
-      * Won't be persisted. Just a temporary holder for the JSON metadata file 
+      * Won't be persisted. Just a temporary holder for the JSON metadata file
       * containing the user email in case the user is not logged but uploads a
       * photo anyway.
       *
@@ -275,7 +275,7 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
       * @ORM\ManyToOne(targetEntity="Occurrence", inversedBy="photos")
       * @ORM\JoinColumn(name="occurrence_id", referencedColumnName="id")
       * @ApiSubresource(maxDepth=1)
-      * @Groups({"photo_read", "read", "write"}) 
+      * @Groups({"photo_read", "read", "write"})
       */
      private $occurrence;
 
@@ -521,7 +521,7 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
    }
 
     /**
-     * Returns an array containg the paths to all the images (all sizes) for 
+     * Returns an array containg the paths to all the images (all sizes) for
      * this photo.
      */
     public function getContentUrls(): ?array {
@@ -529,9 +529,9 @@ class Photo implements OwnedEntityFullInterface, TimestampedEntityInterface {
         $paths = [$this->contentUrl];
         $sizes = ['S', 'CRL', 'L', 'XL', 'X2L'];
 
-       foreach ($sizes as $size) {  
+       foreach ($sizes as $size) {
             $paths[] = $this->getContentUrlForSize($size);
-        } 
+        }
 
        return $paths;
    }

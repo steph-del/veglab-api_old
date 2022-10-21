@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "denormalization_context"={"groups"={"write"}}
  * })
  * @ORM\Entity(repositoryClass="App\Repository\PhotoTagRepository")
- * @ORM\Table(name="photo_tag",indexes={@ORM\Index(name="user_id_idx", columns={"user_id"})}, options={"comment":"Mot-clé photo"})
+ * @ORM\Table(name="photo_tag",indexes={@ORM\Index(name="user_id_photo_tag_idx", columns={"user_id"})}, options={"comment":"Mot-clé photo"})
  */
 class PhotoTag implements OwnedEntitySimpleInterface, TagInterface {
 
@@ -43,7 +43,7 @@ class PhotoTag implements OwnedEntitySimpleInterface, TagInterface {
      * @ORM\Column(name="user_id", type="string", nullable=false, options={"comment":"ID de l'utilisateur"})
      */
     private $userId = null;
-    
+
     /**
      * Mot-clé.
      *
@@ -51,7 +51,7 @@ class PhotoTag implements OwnedEntitySimpleInterface, TagInterface {
      * @ORM\Column(type="string", nullable=true, options={"comment":"Mot-clé"})
      */
     private $name = null;
-    
+
     /**
      * Hiérarchie (mots clés parents séparés par des /)
      *

@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CEL user profile. 
+ * CEL user profile.
  * Gestion des préférences utilisateurs.
  *
  * @ORM\Entity
@@ -39,7 +39,7 @@ class UserProfileCel {
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="IDENTITY")
     * @ORM\Column(type="integer")
-    * @Groups({"read"})    
+    * @Groups({"read"})
     */
    private $id = null;
 
@@ -47,16 +47,16 @@ class UserProfileCel {
     *
     * @Assert\NotNull
     * @ORM\Column(type="string", nullable=false, unique=true)
-    * @Groups({"read"})    
+    * @Groups({"read"})
     */
    private $userId = null;
 
    /**
     * Anonymisation des données d'observation.
-    * 
+    *
     * @Assert\NotNull
     * @ORM\Column(name="anonymize_data", type="boolean", nullable=false, options={"comment":"Anonymisation des données d'observation", "default": false})
-    * @Groups({"read", "write"})    
+    * @Groups({"read", "write"})
     */
    private $anonymizeData = false;
 
@@ -65,7 +65,7 @@ class UserProfileCel {
     *
     * @Assert\NotNull
     * @ORM\Column(name="is_end_user_licence_accepted", type="boolean", nullable=false, options={"comment":"Validation des conditions d'utilisation", "default": true})
-    * @Groups({"read", "write"})    
+    * @Groups({"read", "write"})
     */
    private $isEndUserLicenceAccepted = true;
 
@@ -75,7 +75,7 @@ class UserProfileCel {
     *
     * @Assert\NotNull
     * @ORM\Column(name="always_display_advanced_fields", type="boolean", nullable=false, options={"comment":"Validation des conditions d'utilisation", "default": false})
-    * @Groups({"read", "write"})    
+    * @Groups({"read", "write"})
     */
    private $alwaysDisplayAdvancedFields = false;
 
@@ -84,8 +84,8 @@ class UserProfileCel {
     * Quel langage doit être utilisé dans l'interface ?
     *
     * @Assert\NotNull
-    * @ORM\Column(name="language", type="languageenum", nullable=false, options={"comment":"langage choisi pour communiquer dans l'interface.", "default": LanguageEnumType::FR})
-    * @Groups({"read", "write"})    
+    * @ORM\Column(name="language", type="text", nullable=false, options={"comment":"langage choisi pour communiquer dans l'interface.", "default": LanguageEnumType::FR})
+    * @Groups({"read", "write"})
     */
    private $language = LanguageEnumType::FR;
 
@@ -94,7 +94,7 @@ class UserProfileCel {
      * The references to CustomUserField this user has created.
      *
      * @ORM\OneToMany(targetEntity="UserCustomField", mappedBy="userProfileCel", cascade={"remove"})
-     * @Groups({"read", "write"})  
+     * @Groups({"read", "write"})
      */
     private $userCustomFields;
 

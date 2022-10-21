@@ -16,16 +16,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * An entity representing an extended field of a 
+ * An entity representing an extended field of a
  * <code>TelaBotanicaProject</code>.
  *
  * @package App\Entity
- * 
+ *
  * @ApiResource(attributes={
  *     "normalization_context"={"groups"={"read"}},
  *     "denormalization_context"={"groups"={"write"}}
  * })
- * 
+ *
  * @ApiFilter(SearchFilter::class, properties={"projectName": "start"})
  *
  *
@@ -46,16 +46,16 @@ class ExtendedField {
 
     /**
      * Nom du champ
-     * 
+     *
      * @Assert\NotNull
      * @Groups({"read", "write"})
-     * @ORM\Column(name="field_id", type="string", nullable=false, length=50) 
+     * @ORM\Column(name="field_id", type="string", nullable=false, length=50)
      */
     private $fieldId = null;
 
     /**
      * Nom du projet
-     * 
+     *
      * @Assert\NotNull
      * @Groups({"read", "write"})
      * @ORM\Column(name="project", type="string", nullable=false, length=50)
@@ -67,7 +67,7 @@ class ExtendedField {
      *
      * @Assert\NotNull
      * @Groups({"read", "write"})
-     * @ORM\Column(name="data_type", type="fielddatatypeenum", nullable=false, length=50, options={"comment":"Type de champ - Texte, Entier, Décimal, Date, Booléen"})
+     * @ORM\Column(name="data_type", type="text", nullable=false, length=50, options={"comment":"Type de champ - Texte, Entier, Décimal, Date, Booléen"})
      */
     private $dataType = null;
 
@@ -99,7 +99,7 @@ class ExtendedField {
 
     /**
      * Valeur minimale dans le cas d'un type numérique
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(name="min_value", type="float", nullable=true, length=10)
      */
@@ -107,7 +107,7 @@ class ExtendedField {
 
     /**
      * Valeur maximale dans le cas d'un type numérique
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(name="max_value", type="float", nullable=true, length=10)
      */
@@ -115,7 +115,7 @@ class ExtendedField {
 
     /**
      * Valeur par défaut
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(name="default_value", type="string", nullable=true, length=255)
      */
@@ -131,7 +131,7 @@ class ExtendedField {
 
     /**
      * Unité de la mesure ou de la donnée
-     * 
+     *
      * @Groups({"read", "write"})
      * @ORM\Column(type="string", nullable=true, length=255, options={"comment":"Unité"})
      */
@@ -171,7 +171,7 @@ class ExtendedField {
     private $extendedFieldOccurrences;
 
     /**
-     * The translations in various languages for this ExtendedField 
+     * The translations in various languages for this ExtendedField
      * description, label, default value and error message.
      *
      * @Groups({"read", "write"})
@@ -186,14 +186,14 @@ class ExtendedField {
     }
 
     public function getId(): ?int {
- 
+
         return $this->id;
     }
 
     public function getDataType(): ?string {
         return $this->dataType;
     }
-    
+
     public function setDataType(string $dataType): self {
         $this->dataType = $dataType;
 
@@ -265,7 +265,7 @@ class ExtendedField {
     }
 
     public function setRegexp(?string $regexp): self {
- 
+
         $this->regexp = $regexp;
 
         return $this;

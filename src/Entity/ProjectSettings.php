@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Represents widget settings for a given project.
- * 
+ *
  * Modèle pour les configurations des widgets de saisie.
  *
  * @ORM\HasLifecycleCallbacks
@@ -81,7 +81,7 @@ class ProjectSettings
 
 
    /**
-    * Liste de valeurs possibles pour le taxon. Prend la forme 
+    * Liste de valeurs possibles pour le taxon. Prend la forme
     * 'repository_name: taxoId1,taxoId2, ...,taxoIdn'
     *
     * @Groups({"read"})
@@ -132,7 +132,7 @@ class ProjectSettings
    private $dateUpdated = null;
 
    /**
-    * Niveau de restriction pour la saisie du taxon : un seul taxon 
+    * Niveau de restriction pour la saisie du taxon : un seul taxon
     * sélectionnable, plusieurs, un référentiel.
     *
     * @Groups({"read"})
@@ -169,11 +169,11 @@ class ProjectSettings
    private $info = null;
 
    /**
-    * Précision géographique à laquelle est publiée l'obs, permet de gérer le 
+    * Précision géographique à laquelle est publiée l'obs, permet de gérer le
     * floutage - Précise, Localité, Maille 10x10km.
     *
     * @Groups({"read"})
-    * @ORM\Column(name="published_location", type="publishedlocationenum", nullable=true, options={"comment":"Précision géographique à laquelle est publiée l'obs, permet de gérer le floutage", "default": PublishedLocationEnumType::TEN_BY_TEN})
+    * @ORM\Column(name="published_location", type="text", nullable=true, options={"comment":"Précision géographique à laquelle est publiée l'obs, permet de gérer le floutage", "default": PublishedLocationEnumType::TEN_BY_TEN})
     */
    private $publishedLocation = null;
 
@@ -189,7 +189,7 @@ class ProjectSettings
 
    /**
      * Many WidgetConfiguration have One TelaBotanicaProject.
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="TelaBotanicaProject", inversedBy="widgetConfigurations")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */

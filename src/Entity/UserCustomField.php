@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
-use Symfony\Component\Serializer\Annotation\Groups;	
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -46,7 +46,7 @@ class UserCustomField
     *
     * @Assert\NotNull
     * @Groups({"read", "write"})
-    * @ORM\Column(name="data_type", type="fielddatatypeenum", nullable=false, options={"comment":"Type de champ - Texte, Nombre, Date, Booléen"})
+    * @ORM\Column(name="data_type", type="text", nullable=false, options={"comment":"Type de champ - Texte, Nombre, Date, Booléen"})
     */
    private $dataType = null;
 

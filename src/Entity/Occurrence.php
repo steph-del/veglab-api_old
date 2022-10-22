@@ -732,10 +732,14 @@ class Occurrence implements OwnedEntityFullInterface, TimestampedEntityInterface
     protected $userTagRelations;
 
     /**
-     * VL SYE (SYE = SYtaxon Elementaire, représenté par un groupe de colonnes dans un tableau phyto)
+     * VL SYE (SYE = SYntaxon Elementaire, représenté par un groupe de colonnes dans un tableau phyto)
      * @ORM\ManyToMany(targetEntity="App\Entity\Sye", inversedBy="occurrences")
-     * @ORM\JoinColumn(name="sye_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * @ORM\JoinTable(name="vl_occurrence__sye")
+     *
+     * @ORM\JoinTable(
+     *     name="vl_occurrence__sye",
+     *     joinColumns={@ORM\JoinColumn(name="sye_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="occurrence_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")}
+     * )
      * @MaxDepth(1)
      */
     private $syes;
